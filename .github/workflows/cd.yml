@@ -15,7 +15,7 @@ jobs:
 
   deploy-prod:
     needs: security-scan
-    runs-on: runner_prod
+    runs-on: MacBook-Pro-de-Mass
     steps:
       - name: Pull Docker image
         run: docker pull intranet-newdeal:prod
