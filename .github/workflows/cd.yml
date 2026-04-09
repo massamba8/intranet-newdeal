@@ -1,0 +1,24 @@
+name: CD Pipeline
+on:
+  push:
+    branches: ["prod"]
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Scan for vulnerabilities
+        run: docker scan intranet-newdeal:prod
+
+  deploy-prod:
+    needs: security-scan
+    runs-on: runner_prod
+    steps:
+      - name: Pull Docker image
+        run: docker pull intranet-newdeal:prod
+
+      - name: Run Docker container
+        run: docker run -d -p 80:80 intranet-newdeal:prod
